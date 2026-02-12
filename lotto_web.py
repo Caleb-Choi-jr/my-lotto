@@ -2,48 +2,55 @@ import streamlit as st
 import random
 import time
 
-# 1. 페이지 설정 (브라우저 탭에 표시될 이름과 아이콘)
-st.set_page_config(page_title="인생역전 로또", page_icon="💰")
+# 1. 페이지 설정
+st.set_page_config(page_title="인생역전 로또", page_icon="🍀")
+
+# --- [마법의 시작] 네잎클로버가 떠다니는 효과 설정 ---
+def clover_effect():
+    st.markdown(
+        """
+        <style>
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+        .clover {
+            position: fixed;
+            bottom: -10vh;
+            font-size: 2rem;
+            animation: float 5s linear infinite;
+            z-index: 9999;
+        }
+        </style>
+        """, unsafe_allow_html=True
+    )
+    # 클로버 10개를 각기 다른 위치에서 발사!
+    for i in range(10):
+        left = random.randint(0, 90)
+        delay = random.uniform(0, 5)
+        st.markdown(f'<div class="clover" style="left: {left}vw; animation-delay: {delay}s;">🍀</div>', unsafe_allow_html=True)
+# --- [마법의 끝] ---
 
 # 2. 제목 꾸미기
 st.title("💰 인생 역전! 로또 번호 생성기")
-st.markdown("---") # 구분선 추가
-st.subheader("이번 주 행운의 주인공은 바로 당신입니다! 😎")
+st.subheader("네잎클로버의 기운을 받아보세요! 🍀")
 
-# 3. 버튼 만들기
-if st.button("🍀 행운의 5천 원어치 뽑기 (클릭!) 🍀"):
+if st.button("🍀 행운의 번호 뽑기! 🍀"):
     
-    # 두근두근 긴장감 조성 (스피너)
-    with st.spinner('행운의 기운을 모으고 있습니다... 잠시만 기다려주세요!'):
-        time.sleep(2) # 2초 동안 뜸 들이기
+    # 뜸 들이기
+    with st.spinner('행운의 네잎클로버를 찾고 있습니다...'):
+        time.sleep(1.5)
     
-    # --- 시각 효과 팡팡! ---
-    st.balloons() # 풍선 효과
-    st.snow()     # 눈 내리는 효과
-    # ----------------------
+    # 효과 3종 세트!
+    st.balloons()    # 풍선 팡팡
+    st.snow()        # 눈 내리기
+    clover_effect()  # 네잎클로버 둥둥! (우리가 만든 마법)
 
-    st.success("🎉 축하합니다! 분석이 완료되었습니다. 이번 주 1등 당첨 가즈아~!")
+    st.success("🎉 당첨 기운 팍팍! 번호가 나왔습니다!")
     
-    # 4. 5게임 생성 및 출력
     for i in range(1, 6):
-        # 1~45 사이의 숫자 중 6개 중복 없이 추출
         lotto_nums = random.sample(range(1, 46), 6)
-        lotto_nums.sort() # 번호 순서대로 정렬
-        
-        # 보기 좋게 꾸며서 출력
-        st.write(f"### **{i}번째 게임**")
-        
-        # 번호들을 예쁜 파란색 박스 안에 출력
-        num_str = '  |  '.join(map(str, lotto_nums))
-        st.info(f"✨ {num_str} ✨")
-        
-    st.markdown("---")
-    st.warning("⚠️ 재미로만 즐겨주세요! 당첨되면 잊지 마시고 연락주세요. 😉")
+        lotto_nums.sort()
+        st.info(f"**{i}번째 게임:** {lotto_nums}")
 
-# 5. 사이드바 (옆쪽 메뉴)
-with st.sidebar:
-    st.title("🛠️ 옵션 메뉴")
-    st.write("로또 당첨 확률은 $1/8,145,060$ 입니다.")
-    st.write("하지만 님은 할 수 있습니다!")
-    if st.button("새로고침"):
-        st.rerun()
+st.sidebar.info("네잎클로버 효과가 추가되었습니다! 🍀")
